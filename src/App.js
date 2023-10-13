@@ -1,24 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
 
-function App() {
+import Barcode from "./components/Barcode";
+import Scanner from "./components/Scanner";
+
+import "./App.css";
+
+function App({ callback }) {
+  const [startScan, setStartScan] = useState(false);
+  const [barcode, setBarcode] = useState(null);
+
+  useEffect(() => {
+    callback.onUpdate = () => {
+      console.log("service worker update waiting");
+    };
+  }, [callback]);
+
+  const handleResult = (resultString) => {
+    setStartScan(false);
+    setBarcode(resultString);
+  };
+
+  const handleStartScan = () => {
+    setBarcode(null);
+    setStartScan(true);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="button-wrapper">
+        <button type="button" onClick={handleStartScan}>
+          Scan Barcode
+        </button>
+      </div>
+      {barcode && (
+        <div className="barcode">
+          <Barcode barcode={barcode} />
+        </div>
+      )}
+      <div className="scanner">
+        {startScan && <Scanner onResult={handleResult} />}
+      </div>
     </div>
   );
 }
