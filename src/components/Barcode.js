@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import JsBarcode from "JsBarcode";
+import JsBarcode from "jsbarcode";
 
 function Barcode({ barcode }) {
   const renderElementRef = useRef();
