@@ -1,7 +1,8 @@
 import { useZxing } from "react-zxing";
 
-function Scanner({ onResult }) {
+function Scanner({ deviceId, onResult }) {
   const { ref: scannerRef } = useZxing({
+    deviceId,
     onDecodeResult(result) {
       onResult(result.getText());
     },
