@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import Barcode from "./components/Barcode";
 import Scanner from "./components/Scanner";
+import { getMediaDevices } from "./utils";
 
 import "./App.css";
 
@@ -18,9 +19,6 @@ function App({ callback }) {
   }, [callback]);
 
   useEffect(() => {
-    async function getMediaDevices() {
-      return await navigator.mediaDevices.enumerateDevices();
-    }
     getMediaDevices().then((devices) => {
       const videoDevices = devices.filter((d) => d.kind === "videoinput");
       if (videoDevices.length) {
