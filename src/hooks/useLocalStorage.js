@@ -5,7 +5,8 @@ const useDeviceLocalStorage = () => {
   };
 
   const getDeviceId = () => {
-    return localStorage.getItem(cacheName);
+    const storedDevice = localStorage.getItem(cacheName);
+    return storedDevice;
   };
 
   const clearCache = () => {
