@@ -5,11 +5,13 @@ import Scanner from "./components/Scanner";
 import { getMediaDevices } from "./utils";
 
 import "./App.css";
+import useDeviceLocalStorage from "./hooks/useLocalStorage";
 
 function App({ callback }) {
+  const { getDeviceId, storeDeviceId } = useDeviceLocalStorage();
   const [startScan, setStartScan] = useState(false);
   const [devices, setDevices] = useState([]);
-  const [selectedDevice, setSelectedDevice] = useState(null);
+  const [selectedDevice, setSelectedDevice] = useState(getDeviceId() || null);
   const [barcode, setBarcode] = useState(null);
 
   useEffect(() => {
@@ -22,6 +24,7 @@ function App({ callback }) {
     getMediaDevices().then((devices) => {
       const videoDevices = devices.filter((d) => d.kind === "videoinput");
       if (videoDevices.length) {
+        storeDeviceId(videoDevices[0].deviceId);
         setSelectedDevice(videoDevices[0].deviceId);
       }
       setDevices(videoDevices);
@@ -35,7 +38,7 @@ function App({ callback }) {
 
   const handleStartScan = () => {
     setBarcode(null);
-    setStartScan(true);
+    setStartScan((prevStartScan) => !prevStartScan);
   };
 
   return (
@@ -53,7 +56,7 @@ function App({ callback }) {
       )}
       <div className="button-wrapper">
         <button type="button" onClick={handleStartScan}>
-          Scan Barcode
+          {startScan ? "Stop Scanning" : "Scan Barcode"}
         </button>
       </div>
       {barcode && (
