@@ -4,7 +4,9 @@ const cancelStream = (stream) => {
 
 const requestPermission = async () => {
   const stream = await navigator.mediaDevices.getUserMedia({
-    video: true,
+    video: {
+      facingMode: "environment",
+    },
   });
   cancelStream(stream);
 };

@@ -24,7 +24,6 @@ function App({ callback }) {
     getMediaDevices().then((devices) => {
       const videoDevices = devices.filter((d) => d.kind === "videoinput");
       if (videoDevices.length) {
-        storeDeviceId(videoDevices[0].deviceId);
         setSelectedDevice(videoDevices[0].deviceId);
       }
       setDevices(videoDevices);
@@ -41,11 +40,16 @@ function App({ callback }) {
     setStartScan((prevStartScan) => !prevStartScan);
   };
 
+  const handleChangeDevice = (e) => {
+    storeDeviceId(e.target.value);
+    setSelectedDevice(e.target.value);
+  };
+
   return (
     <div className="App">
       {devices && (
         <div className="select-device">
-          <select onChange={(e) => setSelectedDevice(e.target.value)}>
+          <select onChange={handleChangeDevice}>
             {devices.map((device) => (
               <option key={device.deviceId} value={device.deviceId}>
                 {device.label}
