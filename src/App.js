@@ -23,7 +23,7 @@ function App({ callback }) {
   useEffect(() => {
     getMediaDevices().then((devices) => {
       const videoDevices = devices.filter((d) => d.kind === "videoinput");
-      if (videoDevices.length) {
+      if (!selectedDevice && videoDevices.length) {
         setSelectedDevice(videoDevices[0].deviceId);
       }
       setDevices(videoDevices);
