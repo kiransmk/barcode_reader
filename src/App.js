@@ -23,7 +23,8 @@ function App({ callback }) {
   useEffect(() => {
     getMediaDevices().then((devices) => {
       const videoDevices = devices.filter((d) => d.kind === "videoinput");
-      if (!selectedDevice && videoDevices.length) {
+      if (selectedDevice === null && videoDevices.length) {
+        // storeDeviceId(videoDevices[0].deviceId);
         setSelectedDevice(videoDevices[0].deviceId);
       }
       setDevices(videoDevices);
@@ -58,6 +59,7 @@ function App({ callback }) {
           </select>
         </div>
       )}
+      <div>Selected DeviceId: {getDeviceId()}</div>
       <div className="button-wrapper">
         <button type="button" onClick={handleStartScan}>
           {startScan ? "Stop Scanning" : "Scan Barcode"}
