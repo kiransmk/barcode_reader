@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import Barcode from "./components/Barcode";
 import Scanner from "./components/Scanner";
-import { getMediaDevices } from "./utils";
+import { requestPermissionAndGetDevices } from "./utils";
 
 import "./App.css";
 import useDeviceLocalStorage from "./hooks/useLocalStorage";
@@ -11,7 +11,9 @@ function App({ callback }) {
   const { getDeviceId, storeDeviceId } = useDeviceLocalStorage();
   const [startScan, setStartScan] = useState(false);
   const [devices, setDevices] = useState([]);
-  const [selectedDevice, setSelectedDevice] = useState(getDeviceId() || null);
+  const [selectedDevice, setSelectedDevice] = useState(
+    getDeviceId() || undefined
+  );
   const [barcode, setBarcode] = useState(null);
 
   useEffect(() => {
@@ -21,7 +23,7 @@ function App({ callback }) {
   }, [callback]);
 
   useEffect(() => {
-    getMediaDevices().then((devices) => {
+    requestPermissionAndGetDevices().then((devices) => {
       const videoDevices = devices.filter((d) => d.kind === "videoinput");
       // if (selectedDevice === null && videoDevices.length) {
       //   // storeDeviceId(videoDevices[0].deviceId);
