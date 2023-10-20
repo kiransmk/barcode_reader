@@ -50,6 +50,7 @@ function App({ callback }) {
     <div className="App">
       {devices && (
         <div className="select-device">
+          <pre>{JSON.stringify(devices, null, 4)}</pre>
           <select onChange={handleChangeDevice} value={selectedDevice}>
             <option value=""></option>
             {devices.map((device) => (
