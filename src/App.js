@@ -25,10 +25,10 @@ function App({ callback }) {
   useEffect(() => {
     requestPermissionAndGetDevices().then((devices) => {
       const videoDevices = devices.filter((d) => d.kind === "videoinput");
-      // if (selectedDevice === null && videoDevices.length) {
-      //   // storeDeviceId(videoDevices[0].deviceId);
-      //   setSelectedDevice(videoDevices[0].deviceId);
-      // }
+      if (!selectedDevice && videoDevices.length) {
+        storeDeviceId(videoDevices[0].deviceId);
+        setSelectedDevice(videoDevices[0].deviceId);
+      }
       setDevices(videoDevices);
     });
   }, []);
@@ -52,9 +52,7 @@ function App({ callback }) {
     <div className="App">
       {devices && (
         <div className="select-device">
-          <pre>{JSON.stringify(devices, null, 4)}</pre>
           <select onChange={handleChangeDevice} value={selectedDevice}>
-            <option value=""></option>
             {devices.map((device) => (
               <option key={device.deviceId} value={device.deviceId}>
                 {device.label}
@@ -63,7 +61,6 @@ function App({ callback }) {
           </select>
         </div>
       )}
-      <div>Selected DeviceId: {selectedDevice}</div>
       {selectedDevice && (
         <div className="button-wrapper">
           <button type="button" onClick={handleStartScan}>
