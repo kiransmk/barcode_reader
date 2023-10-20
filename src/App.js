@@ -50,7 +50,7 @@ function App({ callback }) {
     <div className="App">
       {devices && (
         <div className="select-device">
-          <select onChange={handleChangeDevice}>
+          <select onChange={handleChangeDevice} value={selectedDevice}>
             <option value=""></option>
             {devices.map((device) => (
               <option key={device.deviceId} value={device.deviceId}>
